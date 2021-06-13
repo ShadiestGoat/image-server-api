@@ -50,7 +50,7 @@ const conf:{
         db: string,
         port: string
     }
-} = require(resolve('./.config.json')) //look idk why .gitignore doesn't care about my config.json entry
+} = require(resolve('./config.json')) //smh
 
 type res<T> = T | {err:string}
 
