@@ -105,4 +105,4 @@ dist
 
 uploads/
 
-config.json
+# .config.json

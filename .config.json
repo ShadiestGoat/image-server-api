@@ -2,7 +2,7 @@
     "mongodb": {
         "username": "",
         "password": "",
-        "ip": "",
+        "ip": "1",
         "db": "",
         "port": "27017"
     }
