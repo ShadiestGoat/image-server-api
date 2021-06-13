@@ -122,7 +122,7 @@ app.post('/upload', async (req, res) => {
             const info2 = new authorModel(_info2)
             await info2.save()
             usr.submitted.push(id)
-            await userModel.findOneAndReplace({id: usr.id}, usr)
+            await userModel.findOneAndUpdate({id: usr.id}, usr)
             cache[id] = _info2
             acache[usr.id] = usr
 
