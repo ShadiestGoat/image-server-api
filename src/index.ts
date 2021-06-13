@@ -162,7 +162,7 @@ async function cacheGen() {
 function getImg(req:Request, res:Response) {
     let tester1 = req.params.id.split('.').pop()
 
-    if (tester1 == 'gif' || tester1 == 'webp') req.params.id = req.params.id.substr(0, req.params.id.length - tester1.length)
+    if (tester1 == 'gif' || tester1 == 'webp') req.params.id = req.params.id.substr(0, req.params.id.length - tester1.length - 1)
 
     const curCache = cache[req.params.id]
     if (!curCache) throw "No Image (Render)"
