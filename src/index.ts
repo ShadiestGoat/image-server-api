@@ -75,7 +75,7 @@ function idMaker(mode:keyof typeof idCache):string {
 }
 
 async function authorize(username:string, password:string):Promise<UserSH> {
-    const usr:UserSH = await userModel.findOne({email:username})
+    const usr:UserSH = await userModel.findOne({username:username})
     if (!usr) throw 'No User'
     compare(password, usr.password, (err, success) => {
         if (err) throw err
