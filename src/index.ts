@@ -114,7 +114,8 @@ app.post('/upload', async (req, res) => {
             const info2 = new authorModel({
                 author: usr.id,
                 id: id,
-                timestamp: Date.now()
+                timestamp: Date.now(),
+                gif: format == 'gif'
             })
             await info2.save()
             usr.submitted.push(id)
@@ -226,14 +227,22 @@ app.get('/u/', async (req, res) => {
     })
 })
 
-app.post('/u/:name', async (req:Request<{name:string}, res<Omit<UserSH, "password">>, {apass: string, auser:string, password: string, max:number}>, res) => {
+app.post('/u/:name', async (req:Request<{name:string}, res<Omit<UserSH, "password">>, {apass: string, auser:string, password: string, max:number}>, res) => {try{
     let id: string;
     const adm = await authorize(req.body.auser, req.body.apass)
     if (adm.username != admin.username && adm.password != admin.password) {
         res.sendStatus(401)
         return
     }
-
+    const userss = Object.keys(acache).map((val) => {
+        return acache[val].username
+    })
+    if (userss.includes(req.params.name)) {
+        res.send({
+            err: "Username already exists!"
+        })
+        return
+    }
     const salt = await genSalt(10)
     const pass = await hash(req.body.password, salt);
 
@@ -254,7 +263,7 @@ app.post('/u/:name', async (req:Request<{name:string}, res<Omit<UserSH, "passwor
         submitted: [],
         username: req.params.name
     })
-})
+} catch(err) {res.send({err: err.toString()})}})
 
 app.use((err:any, _req:Request, res:Response, _next:NextFunction) => {
     res.send({err: err.toString()})
