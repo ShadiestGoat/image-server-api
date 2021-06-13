@@ -1,0 +1,130 @@
+/*
+    theft from gray shift? Potentially.
+*/
+
+:root {
+    --ico: rgb(225, 222, 222);
+    background-color: #202124 !important;
+ }
+
+.scontainer {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    padding-right: 1rem;
+    padding-left: 1rem;
+}
+
+.scontainer > img {
+    display: inline-flex;   
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.75rem var(--spacer-4);
+    text-align: center;
+    vertical-align: middle;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    border: 0;
+    border-radius: 12.25px;
+    transition-timing-function: ease;
+    transition-duration: 0.4s;
+    transition-property: color, background-color;
+    color: var(--ico);
+    padding: 1rem 2rem;
+    font-weight: 500 !important;
+    cursor:pointer;
+}
+
+.btn:focus {
+    outline: 0;
+}
+
+
+
+/* OwO Thefty wefty */
+@media (prefers-reduced-motion: reduce) {
+    .btn {
+    transition: none;
+    }
+}
+
+
+.btn-d {
+    background-color: #d42738;
+}
+
+.text-danger {
+    color: #d42738 !important
+}
+
+.btn-d.active,
+.btn-d.show,
+.btn-d:active,
+.btn-d:hover
+{
+    background-color: #ae1c2b;
+}
+
+.btn-p {
+    background-color: #6f42c2;
+}
+
+.btn-p.active,
+.btn-p.show,
+.btn-p:active,
+.btn-p:hover {
+    background-color: #5729ac;
+}
+
+::selection {
+    background: #6d10ff;
+}
+::-moz-selection {
+    background: #6d10ff;
+}
+
+*,
+:after,
+:before {
+    box-sizing: border-box;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+    color: var(--ico) !important;
+    margin: 0.25vh 0 0 0;
+    margin-bottom: 0;
+    font-weight: bold;
+    text-align: center;
+    line-height: 1.4;
+}
+
+body {
+    margin: 0;
+    font: 500 1rem/1.5 Inter, sans-serif;
+    -webkit-text-size-adjust: 100%;
+}
+h1 {
+    font-size: 2.7rem;
+}
+
+button {
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    color: inherit;
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.srow {
+    display: flex;
+}

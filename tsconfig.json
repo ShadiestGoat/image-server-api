@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "moduleResolution": "Node",
+        "esModuleInterop": true,
+        "target": "ES6",
+        "resolveJsonModule": true,
+        "outDir": "./dist",
+        "checkJs": true,
+        "module": "CommonJS",
+        "lib": ["ESNext"]
+    },
+    "include": ["src"]
+}
