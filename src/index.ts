@@ -57,7 +57,8 @@ const conf:{
     }
 } = require(resolve('./config.json'))
 
-const MongoDBendPoint = "mongodb://" + conf.mongodb.username + ":" + conf.mongodb.password + "@" + conf.mongodb.ip + ":27017/" + conf.mongodb.db + "?readPreference=primary&appname=MongoDB%20Compass&ssl=false?authSource=" + conf.mongodb.db
+const MongoDBendPoint = `mongodb://${conf.mongodb.username}:${conf.mongodb.password}@${conf.mongodb.ip}:${conf.mongodb.port}/${conf.mongodb.db}?readPreference=primary&appname=MyAppNameHere&ssl=false?authSource=${conf.mongodb.db}`
+
 mongoose.connect(MongoDBendPoint, {useNewUrlParser: true, useUnifiedTopology:true, useFindAndModify:true})
 
 const port = process.env.PORT || 3000;
@@ -172,7 +173,7 @@ app.get('/i/:id', async (req, res) => {
     <meta property="og:title" content="Shady's image server" />
     <meta property="og:image" content="/rawi/${req.params.id}" />
     <meta property="og:url" content="/i/${req.params.id}" />
-    <meta property="og:description" content="Forcefully shoved onto this by ${curCache.author}" />
+    <meta property="og:description" content="Forcefully shoved onto this by ${curCache.author} on ${new Date(curCache.timestamp).toUTCString()}" UTC />
     <meta property="twitter:title" content="Shady's image server" />
     <meta property="twitter:image" content="/rawi/${req.params.id}" />
 
