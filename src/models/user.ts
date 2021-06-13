@@ -30,7 +30,7 @@ export const AuthorSchema = new Schema<AuthorMapSH, Model<AuthorMapSH>, AuthorMa
     id: "string",
     author: "string",
     timestamp: "number",
-    // todo gif
+    gif: Boolean
 })
 
 export const authorModel:Model<AuthorMapSH> = model('storageMap', AuthorSchema)

@@ -3,7 +3,6 @@ import fileUpload from "express-fileupload";
 import cors from "cors";
 import bodyParser from 'body-parser'
 import morgan from 'morgan'
-import fs from "fs/promises"
 import { resolve } from "path";
 import { randomBytes } from "crypto"
 import sharp from "sharp"
@@ -106,11 +105,9 @@ app.post('/upload', async (req, res) => {
             if (!(img.mimetype.startsWith("image/"))) throw "Must be an image >:{"
             if (img.size > usr.maxMb * 1000000) throw 'Too Big!'
 
-            const format = img.name.split('.').pop()
-            if (format != 'gif') {
-                img.data = await sharp(img.data, {animated: false}).webp().toBuffer()
+            const format = img.mimetype.split('/').pop()
+            if (format != 'gif') img.data = await sharp(img.data, {animated: false}).webp().toBuffer()
 
-            }
             const id = idMaker('items');
             img.mv(uploadDir + id + (format == 'gif' ? '.gif' : '.webp'))
 
