@@ -1,4 +1,4 @@
-import express, { Application, Request, Response } from "express";
+import express, { Application, NextFunction, Request, Response } from "express";
 import fileUpload from "express-fileupload";
 import cors from "cors";
 import bodyParser from 'body-parser'
@@ -42,11 +42,6 @@ let first = true
 
 app.set('view engine', 'ejs')
 
-app.use((err, req, res, next) => {
-    console.log(err.toString())
-    res.render({err: err.toString()})
-})
-
 const conf:{
     mongodb: {
         username: string,
@@ -57,6 +52,8 @@ const conf:{
     }
 } = require(resolve('./config.json'))
 
+type res<T> = T | {err:string}
+
 const MongoDBendPoint = `mongodb://${conf.mongodb.username}:${conf.mongodb.password}@${conf.mongodb.ip}:${conf.mongodb.port}/${conf.mongodb.db}?readPreference=primary&appname=MyAppNameHere&ssl=false?authSource=${conf.mongodb.db}`
 
 mongoose.connect(MongoDBendPoint, {useNewUrlParser: true, useUnifiedTopology:true, useFindAndModify:true})
@@ -64,6 +61,9 @@ mongoose.connect(MongoDBendPoint, {useNewUrlParser: true, useUnifiedTopology:tru
 const port = process.env.PORT || 3000;
 
 app.use('/rawi', express.static(uploadDir));
+
+
+
 
 app.get('/baselmao.css', (req, res) => {
     res.sendFile(resolve('./index.css'))
@@ -152,7 +152,7 @@ async function cacheGen() {
     first = false
 }
 
-app.get('/i/:id', async (req, res) => {
+app.get('/i/:id', async (req, res) => {try{
     if (first) {
         await cacheGen()
     }
@@ -196,9 +196,9 @@ app.get('/i/:id', async (req, res) => {
 
     </body>
 `)
-})
+} catch (err) {res.send({err: err.toString()})}})
 
-app.get('/u/:id', async (req:Request<{id:string}>, res:Response<Omit<UserSH, "password">>) => {
+app.get('/u/:id', async (req:Request<{id:string}>, res:Response<res<Omit<UserSH, "password">>>) => {try{
     let user:UserSH = acache[req.params.id]
     if (!user) {
         if (first) await cacheGen()
@@ -212,9 +212,9 @@ app.get('/u/:id', async (req:Request<{id:string}>, res:Response<Omit<UserSH, "pa
         maxMb: user.maxMb,
         submitted: user.submitted
     })
-})
+} catch (err) {res.send({err: err.toString()})}})
 
-app.post('/u/:name', async (req:Request<{name:string}, Omit<UserSH, "password">, {apass: string, auser:string, password: string, max:number}>, res) => {
+app.post('/u/:name', async (req:Request<{name:string}, res<Omit<UserSH, "password">>, {apass: string, auser:string, password: string, max:number}>, res) => {
     let id: string;
     const adm = await authorize(req.body.auser, req.body.apass)
     if (adm.username != admin.username && adm.password != admin.password) {
@@ -243,6 +243,11 @@ app.post('/u/:name', async (req:Request<{name:string}, Omit<UserSH, "password">,
         username: req.params.name
     })
 })
+
+app.use((err:any, _req:Request, res:Response, _next:NextFunction) => {
+    res.send({err: err.toString()})
+})
+
 
 app.listen(port, () =>
     console.log(`App is listening on port ${port}.`)
