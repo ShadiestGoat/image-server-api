@@ -166,7 +166,7 @@ function getImg(req:Request, res:Response) {
         if (curCache.gif) req.params.id += '.gif'
         else req.params.id += '.webp'
     }
-    res.send(`
+    return `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -195,18 +195,17 @@ function getImg(req:Request, res:Response) {
     <div class="scontainer">
         <img style="object-fit: contain; height: 100%; margin: 0 auto !important; display: block;" src="/rawi/${req.params.id}" />
     </div>
-</body>
-        `)
+</body>`
 }
 
 app.get('/i/:id', async (req, res) => {try{
-    getImg(req, res)
+    res.send(getImg(req, res))
 } catch (err) {
     res.send({err: err.toString()})
     console.error(err)
 }})
 app.post('/i/:id', async (req, res) => {try{
-    getImg(req, res)
+    res.send(getImg(req, res))
 } catch (err) {
     res.send({err: err.toString()})
     console.error(err)
