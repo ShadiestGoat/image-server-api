@@ -113,15 +113,17 @@ app.post('/upload', async (req, res) => {
             const id = idMaker('items');
             img.mv(uploadDir + id + (format == 'gif' ? '.gif' : '.webp'))
 
-            const info2 = new authorModel({
+            const _info2:AuthorMapSH = {
                 author: usr.id,
                 id: id,
                 timestamp: Date.now(),
                 gif: format == 'gif'
-            })
+            }
+            const info2 = new authorModel(_info2)
             await info2.save()
             usr.submitted.push(id)
             await userModel.updateOne({id: usr.id}, usr)
+            cache[id] = _info2
             res.redirect('/i/' + id + (format == 'gif' ? '.gif' : '.webp'))
         } else {
             throw "No Image"
@@ -258,7 +260,7 @@ app.post('/u/:name', async (req:Request<{name:string}, res<Omit<UserSH, "passwor
 
     const _usr = new userModel(usr)
     await _usr.save()
-
+    acache[usr.id] = usr
     res.send({
         id: id,
         maxMb: req.body.max,
