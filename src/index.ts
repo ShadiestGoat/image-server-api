@@ -214,6 +214,21 @@ app.get('/u/:id', async (req:Request<{id:string}>, res:Response<res<Omit<UserSH,
     })
 } catch (err) {res.send({err: err.toString()})}})
 
+app.get('/u/', async (req, res) => {
+    let items:Omit<UserSH, "password">[] = Object.keys(acache).map((val) => {
+        let vall = acache[val]
+        return {
+            id: vall.id,
+            maxMb: vall.maxMb,
+            submitted: vall.submitted,
+            username: vall.username
+        }
+    })
+    res.send({
+        users: items
+    })
+})
+
 app.post('/u/:name', async (req:Request<{name:string}, res<Omit<UserSH, "password">>, {apass: string, auser:string, password: string, max:number}>, res) => {
     let id: string;
     const adm = await authorize(req.body.auser, req.body.apass)
