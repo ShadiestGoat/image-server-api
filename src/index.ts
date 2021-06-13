@@ -55,7 +55,7 @@ type res<T> = T | {err:string}
 
 const MongoDBendPoint = `mongodb://${conf.mongodb.username}:${conf.mongodb.password}@${conf.mongodb.ip}:${conf.mongodb.port}/${conf.mongodb.db}?readPreference=primary&appname=MyAppNameHere&ssl=false?authSource=${conf.mongodb.db}`
 
-mongoose.connect(MongoDBendPoint, {useNewUrlParser: true, useUnifiedTopology:true, useFindAndModify:true})
+mongoose.connect(MongoDBendPoint, {useNewUrlParser: true, useUnifiedTopology:true, useFindAndModify:false})
 
 const port = process.env.PORT || 3000;
 
@@ -161,7 +161,7 @@ async function cacheGen() {
 
 function getImg(req:Request, res:Response) {
     const curCache = cache[req.params.id]
-    if (!curCache) throw "No Image"
+    if (!curCache) throw "No Image (Render)"
     if (!req.params.id.endsWith('.webp') && !req.params.id.endsWith('.gif')) {
         if (curCache.gif) req.params.id += '.gif'
         else req.params.id += '.webp'
