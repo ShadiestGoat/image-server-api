@@ -1,7 +1,6 @@
 import express, { Application, NextFunction, Request, Response } from "express";
 import fileUpload from "express-fileupload";
 import cors from "cors";
-import bodyParser from 'body-parser'
 import morgan from 'morgan'
 import { resolve } from "path";
 import { randomBytes } from "crypto"
@@ -20,8 +19,8 @@ app.use(fileUpload({
 const uploadDir = resolve('./uploads/') + '/'
 
 app.use(cors({origin: '*', }));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 app.use(morgan('dev'));
 app.use(flash())
 
@@ -100,6 +99,7 @@ app.post('/upload', async (req, res) => {
         }
 
         if (req.files?.image) {
+            console.log('working')
             let img = req.files.image
             if (img instanceof Array) {
                 throw 'why?'
