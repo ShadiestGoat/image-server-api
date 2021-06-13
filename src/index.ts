@@ -124,6 +124,8 @@ app.post('/upload', async (req, res) => {
             usr.submitted.push(id)
             await userModel.updateOne({id: usr.id}, usr)
             cache[id] = _info2
+            acache[usr.id] = usr
+
             res.redirect('/i/' + id + (format == 'gif' ? '.gif' : '.webp'))
         } else {
             throw "No Image"
