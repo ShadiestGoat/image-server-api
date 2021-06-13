@@ -60,8 +60,10 @@ mongoose.connect(MongoDBendPoint, {useNewUrlParser: true, useUnifiedTopology:tru
 const port = process.env.PORT || 3000;
 
 app.use('/rawi', express.static(uploadDir));
-
-
+app.use('/', async (req, res, next) => {
+    if (first) await cacheGen()
+    next()
+})
 
 
 app.get('/baselmao.css', (req, res) => {
@@ -152,9 +154,6 @@ async function cacheGen() {
 }
 
 app.get('/i/:id', async (req, res) => {try{
-    if (first) {
-        await cacheGen()
-    }
     const curCache = cache[req.params.id]
     if (!curCache) throw "No Image"
     if (!req.params.id.endsWith('.webp') && !req.params.id.endsWith('.gif')) {
@@ -202,11 +201,7 @@ app.get('/i/:id', async (req, res) => {try{
 
 app.get('/u/:id', async (req:Request<{id:string}>, res:Response<res<Omit<UserSH, "password">>>) => {try{
     let user:UserSH = acache[req.params.id]
-    if (!user) {
-        if (first) await cacheGen()
-        user = acache[req.params.id]
-        if (!user) throw 'no user'
-    }
+    if (!user) throw 'no user'
 
     res.send({
         id: user.id,
