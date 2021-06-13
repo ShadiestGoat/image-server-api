@@ -136,6 +136,8 @@ app.post('/upload', async (req, res) => {
     }
 })
 
+
+
 async function cacheGen() {
     let id1 = []
     let id2 = [];
@@ -157,18 +159,16 @@ async function cacheGen() {
     first = false
 }
 
-app.get('/i/:id', async (req, res) => {try{
+function getImg(req:Request, res:Response) {
     const curCache = cache[req.params.id]
     if (!curCache) throw "No Image"
     if (!req.params.id.endsWith('.webp') && !req.params.id.endsWith('.gif')) {
         if (curCache.gif) req.params.id += '.gif'
         else req.params.id += '.webp'
     }
-
     res.send(`
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <title> Sick ass epic image server </title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -195,9 +195,18 @@ app.get('/i/:id', async (req, res) => {try{
     <div class="scontainer">
         <img style="object-fit: contain; height: 100%; margin: 0 auto !important; display: block;" src="/rawi/${req.params.id}" />
     </div>
+</body>
+        `)
+}
 
-    </body>
-`)
+app.get('/i/:id', async (req, res) => {try{
+    getImg(req, res)
+} catch (err) {
+    res.send({err: err.toString()})
+    console.error(err)
+}})
+app.post('/i/:id', async (req, res) => {try{
+    getImg(req, res)
 } catch (err) {
     res.send({err: err.toString()})
     console.error(err)
