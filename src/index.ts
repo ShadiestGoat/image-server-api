@@ -126,6 +126,7 @@ app.post('/upload', async (req, res) => {
         }
     } catch (err) {
         res.send({err: err.toString()})
+        console.error(err)
     }
 })
 
@@ -194,7 +195,10 @@ app.get('/i/:id', async (req, res) => {try{
 
     </body>
 `)
-} catch (err) {res.send({err: err.toString()})}})
+} catch (err) {
+    res.send({err: err.toString()})
+    console.error(err)
+}})
 
 app.get('/u/:id', async (req:Request<{id:string}>, res:Response<res<Omit<UserSH, "password">>>) => {try{
     let user:UserSH = acache[req.params.id]
@@ -210,7 +214,10 @@ app.get('/u/:id', async (req:Request<{id:string}>, res:Response<res<Omit<UserSH,
         maxMb: user.maxMb,
         submitted: user.submitted
     })
-} catch (err) {res.send({err: err.toString()})}})
+} catch (err) {
+    res.send({err: err.toString()})
+    console.error(err)
+}})
 
 app.get('/u/', async (req, res) => {
     let items:Omit<UserSH, "password">[] = Object.keys(acache).map((val) => {
@@ -263,10 +270,14 @@ app.post('/u/:name', async (req:Request<{name:string}, res<Omit<UserSH, "passwor
         submitted: [],
         username: req.params.name
     })
-} catch(err) {res.send({err: err.toString()})}})
+} catch(err) {
+    res.send({err: err.toString()})
+    console.error(err)
+}})
 
 app.use((err:any, _req:Request, res:Response, _next:NextFunction) => {
     res.send({err: err.toString()})
+    console.error(err)
 })
 
 
