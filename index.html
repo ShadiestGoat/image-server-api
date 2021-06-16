@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Image Server</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="Shady's image server" />
+    <meta name="theme-color" content="#5655b0">
+    <link rel="stylesheet" href="./index.css" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="scontainer">
+        <form class="row" style="flex: 0 0 100%;" method="POST" action="http://168.119.98.120:6969/upload" enctype="multipart/form-data">
+            <h1 style="align-self: center; margin-top: 3%;">Image server, but shit</h1>
+            <div class="srow" style="margin-top: 14%; ">
+                <input style="display: block; margin: 0 auto;" type="file" accept="image/*" name="image">
+            </div>
+            <div class="">
+                <input class="srow" style="margin-top: 1%; margin: 1% auto" type="text" name="username" placeholder="Username" required>
+                <input class="srow" style="margin: 0 auto" type="password" name="password" placeholder="Token" required>
+                <input class="btn btn-p" style="margin: 1% auto; display: block;" type="submit" name="btn_upload" value="Upload">
+            </div>
+        </form>
+    </div>
+</body>

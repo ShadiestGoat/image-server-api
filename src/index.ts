@@ -64,7 +64,6 @@ app.use('/', async (req, res, next) => {
     next()
 })
 
-
 app.get('/baselmao.css', (req, res) => {
     res.sendFile(resolve('./index.css'))
 })
@@ -99,7 +98,6 @@ app.post('/upload', async (req, res) => {
         }
 
         if (req.files?.image) {
-            console.log('working')
             let img = req.files.image
             if (img instanceof Array) {
                 throw 'why?'
@@ -108,11 +106,10 @@ app.post('/upload', async (req, res) => {
             if (img.size > usr.maxMb * 1000000) throw 'Too Big!'
 
             const format = img.mimetype.split('/').pop()
-            if (format != 'gif') img.data = await sharp(img.data, {animated: false}).webp().toBuffer()
+            if (format != 'gif') img.data = await sharp(img.data, {animated: false}, ).webp().toBuffer()
 
             const id = idMaker('items');
             img.mv(uploadDir + id + (format == 'gif' ? '.gif' : '.webp'))
-
             const _info2:AuthorMapSH = {
                 author: usr.id,
                 id: id,
@@ -179,7 +176,7 @@ function getImg(req:Request, res:Response) {
     <meta property="og:title" content="Shady's image server" />
     <meta property="og:image" content="/rawi/${req.params.id}" />
     <meta property="og:url" content="/i/${req.params.id}" />
-    <meta property="og:description" content="Forcefully shoved onto this by ${curCache.author} on ${new Date(curCache.timestamp).toUTCString()}" UTC />
+    <meta property="og:description" content="Forcefully shoved onto this by ${acache[curCache.author].username} on ${new Date(curCache.timestamp).toUTCString()}" UTC />
     <meta property="twitter:title" content="Shady's image server" />
     <meta property="twitter:image" content="/rawi/${req.params.id}" />
 
