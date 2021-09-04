@@ -14,6 +14,7 @@ dotenv.config()
 ;[ "DB_NAME", "LOCATION", "PASSWORD", "USERNAME" ].forEach(element => {
     if (!process.env[element]) throw console.warn(`${element} is not present in env! Using default...`)
 });
+
 const { DB_NAME, LOCATION, PASSWORD, USERNAME } = process.env;
 
 async function init2():Promise<void> {
@@ -39,7 +40,6 @@ const PORT = process.env.PORT ?? 3000;
 const submittionCache:Record<string, submition> = {}
 const userCache:Record<string, user> = {}
 const admin:Record<string, user> = {}
-
 
 const app:Application = express()
 app.use(fileUpload({createParentPath: true}));
@@ -91,7 +91,6 @@ function getIdInfo(id:string):{
 
 app.post('/upload', async (req, res) => {
     let usr:user;
-    console.log('uploaded')
     try {
         if (req.body.id && req.body.password) usr = authorize(req.body.id, req.body.password)
         else {res.sendStatus(401);return}
@@ -250,7 +249,7 @@ io.use((socket, next) => {
     next()
 })
 
-io.on('connect', (socket) => {
+io.on('connection', (socket) => {
     const usr = authorize(socket.handshake.auth.id, socket.handshake.auth.password)
     socket.join(usr.id)
 })
