@@ -1,36 +1,22 @@
-import { model, Model, Schema } from "mongoose";
+import { model, Schema } from "mongosteel"
 
-
-export interface UserSH {
+export type user = {
     username: string,
     password: string,
     maxMb: number,
     submitted: string[],
-    id: string
+    id: string,
+    admin: boolean
 }
-
-export const UserSchema = new Schema<UserSH, Model<UserSH>, UserSH>({
+const userSH = new Schema<user>({
     id: "string",
     maxMb: "number",
     username: "string",
     submitted: ["string"],
-    password: "string"
+    password: "string",
+    admin: "boolean"
 })
 
-export const userModel = model('users', UserSchema)
+export const UserModel = model('users', userSH, { })
 
-export interface AuthorMapSH {
-    id: string,
-    gif: boolean
-    author: string,
-    timestamp: number
-}
-
-export const AuthorSchema = new Schema<AuthorMapSH, Model<AuthorMapSH>, AuthorMapSH>({
-    id: "string",
-    author: "string",
-    timestamp: "number",
-    gif: Boolean
-})
-
-export const authorModel:Model<AuthorMapSH> = model('storageMap', AuthorSchema)
+export default UserModel

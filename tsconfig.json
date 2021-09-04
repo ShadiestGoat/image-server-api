@@ -8,7 +8,9 @@
         "outDir": "./dist",
         "checkJs": true,
         "module": "CommonJS",
-        "lib": ["ESNext"]
+        "lib": ["ESNext"],
+        "strict": true,
+        "strictNullChecks": true
     },
     "include": ["src"]
 }
