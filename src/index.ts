@@ -117,7 +117,11 @@ app.post('/upload', async (req, res) => {
         await UserModel.findOneAndUpdate({id: usr.id}, { submitted: usr.submitted })
         submittionCache[id] = submittion.doc
         userCache[usr.id] = usr
-        res.redirect(`/i/${id}${format == 'gif' ? '.gif' : '.webp'}`)
+        res.send({
+            id,
+            link: `https://${req.hostname}/i/${id}`,
+            raw: `https://${req.hostname}/rawi/${id}.${format == 'gif' ? "gif" : "webp"}`
+        })
         io.to(usr.id).emit('mePost', {
             id,
             format: format == "gif" ? 'gif' : 'webp'
