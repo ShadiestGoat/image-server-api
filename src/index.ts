@@ -30,7 +30,6 @@ async function init2():Promise<void> {
     })
     ;(await SubmittionModel.find({})).forEach((val) => {submittionCache[val.id] = val})
     ;(await UserModel.find({})).forEach((val) => {userCache[val.id] = val;if (val.admin) admin[val.id] = val})
-    // jikmaUIJOMKLsnsjadajiJJhdjmsandiasjkdndsia
 }
 
 init2().then(() => console.log('Cache setup!')).catch(err => console.error(err))
@@ -88,6 +87,17 @@ function getIdInfo(id:string):{
         id: newId
     }
 }
+
+app.delete('/i/:id', async (req:Request<{id: string}>, res) => {
+    const auth = authorize(req.headers.id as string, req.headers.password as string)
+    if (auth.id != req.headers.id) throw 'Not Authorized'
+    await SubmittionModel.findOneAndDelete({id: req.params.id})
+    delete submittionCache[req.params.id]
+    userCache[auth.id].submitted.splice(userCache[auth.id].submitted.indexOf(req.params.id), 1)
+    userCache[auth.id].submitted[userCache[auth.id].submitted.indexOf(req.params.id)] = userCache[auth.id].submitted[userCache[auth.id].submitted.length-1];
+    userCache[auth.id].submitted.pop();
+    await UserModel.findOneAndUpdate({id: auth.id}, {submitted: userCache[auth.id].submitted})
+})
 
 app.post('/upload', async (req, res) => {
     let usr:user;

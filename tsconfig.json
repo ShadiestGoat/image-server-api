@@ -10,7 +10,8 @@
         "module": "CommonJS",
         "lib": ["ESNext"],
         "strict": true,
-        "strictNullChecks": true
+        "strictNullChecks": true,
+        "allowSyntheticDefaultImports": true
     },
     "include": ["src"]
 }
