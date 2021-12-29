@@ -105,7 +105,9 @@ app.post('/upload', async (req, res) => {
         if (req.body.id && req.body.password) usr = authorize(req.body.id, req.body.password)
         else {res.sendStatus(401);return}
     } catch (err) {res.sendStatus(401);return}
+    // @ts-ignore
     if (req.files?.image) {
+        // @ts-ignore
         const img = req.files.image
         if (img instanceof Array) throw 'why'
 
@@ -113,7 +115,7 @@ app.post('/upload', async (req, res) => {
         if (((img.size > usr.maxMb * 1000000) && !usr.admin) || img.size > 1000000 * 15) throw 'Too Big!'
 
         const format = img.mimetype.split('/').pop() ?? 'webp'
-        if (format != 'gif') img.data = await sharp(img.data, {animated: false}, ).webp().toBuffer()
+        if (format != 'gif' && !(img.mimetype as string).endsWith("/webp")) img.data = await sharp(img.data, {animated: false}, ).webp().toBuffer()
         const id = idMaker('img');
         const submittion = new SubmittionModel({
             id: id,        
